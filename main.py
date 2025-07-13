@@ -1,5 +1,6 @@
 import pygame
 import random
+from sand_texture_loader import *
 
 pygame.init()
 screen = pygame.display.set_mode((400, 400))
@@ -22,6 +23,8 @@ gravity = 0.2
 
 pygame.time.Clock()
 
+palette, probabilities = load_palette_and_weights()
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:   #this is if player presses closes tab then the program quits
@@ -36,10 +39,10 @@ while True:
         gx = pos[0] // CELL_SIZE
         gy = pos[1] // CELL_SIZE
 
-        if 0 <= gx < GRID_WIDTH and 0 <= gy < GRID_HEIGHT:
+        if 5 <= gx < GRID_WIDTH - 4  and 5 <= gy < GRID_HEIGHT - 4:
             for y in range(-5,5):
                 for x in range(-5,5):
-                    grid[gy+y][gx+x] = {"color" : (255, 255, 0), "vy" : 1.0}    #places yellow square with velocity 1(if velocity is less than 1 then block will not move
+                    grid[gy+y][gx+x] = {"color" : random.choices(palette, weights=probabilities)[0], "vy" : 1.0}    #places yellow square with velocity 1(if velocity is less than 1 then block will not move
                     last_placed_time = pygame.time.get_ticks()      #updated timer
 
     if pygame.mouse.get_pressed()[2]:
